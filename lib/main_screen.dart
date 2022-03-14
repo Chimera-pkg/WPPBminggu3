@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:minggu3/detail_screen.dart';
+import 'package:minggu3/model/tourism_place.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -9,18 +11,31 @@ class MainScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Wisata Bandung'),
       ),
-      body: listItem(),
+      body: ListView.builder(
+        itemBuilder: (context, index) {
+          final TourismPlace place = tourismPlaceList[index];
+          return InkWell(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return DetailScreen();
+              }));
+            },
+            child: listItem(place),
+          );
+        },
+        itemCount: tourismPlaceList.length,
+      ),
     );
   }
 
-  Widget listItem() {
+  Widget listItem(TourismPlace place) {
     return Card(
       child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const <Widget>[
             Expanded(
               flex: 1,
-              child: Image.asset('asset/images/submarine.jpg'),
+              child: Image.asset(place.imageAsset),
             ),
             Expanded(
               flex: 2,
@@ -31,13 +46,13 @@ class MainScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: const <Widget>[
                     Text(
-                      'Farm House Lembang',
+                      place.name,
                       style: TextStyle(fontSize: 16.0),
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    Text('Lembang'),
+                    Text(place.location),
                   ],
                 ),
               ),
